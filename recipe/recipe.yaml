@@ -1,0 +1,53 @@
+schema_version: 1
+
+context:
+  name: tensor-sensor
+  version: "1.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/tensor-sensor-${{ version }}.tar.gz
+  sha256: 5406c746ac3706a75f1a18b3f7e44125c39970d3cde5480f78bef16eacf2c93b
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - python-graphviz >=0.14.1
+    - ipython
+    - matplotlib-base
+    - numpy
+    - python >=${{ python_min }}
+
+tests:
+  - python:
+      imports:
+        - tsensor.analysis
+        - tsensor.ast
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: The goal of this library is to generate more helpful exception messages for matrix algebra expressions for numpy, pytorch, jax, tensorflow, keras, fastai.
+  description: |
+    TensorSensor clarifies exceptions by augmenting messages and
+    visualizing Python code to indicate the shape of tensor variables.
+  homepage: https://github.com/parrt/tensor-sensor
+  repository: https://github.com/parrt/tensor-sensor
+  documentation: https://github.com/parrt/tensor-sensor
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
